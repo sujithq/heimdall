@@ -22,7 +22,6 @@ import (
 	sql "github.com/moducate/heimdall/internal/db"
 	"github.com/moducate/heimdall/internal/env"
 	"github.com/moducate/heimdall/internal/routes"
-	"github.com/moducate/heimdall/internal/services"
 	"log"
 	"net/http"
 	"os"
@@ -52,10 +51,7 @@ func New(dsn string) *Server {
 		log.Fatalf("Heimdall server failed to connect to PostgreSQL: %s\n", err)
 	}
 
-	srv.Env = &env.Env{
-		DB: db,
-	}
-	srv.Env.Services.School = services.SchoolServiceSql{DB: db}
+	srv.Env = env.New(db)
 
 	routes.School(srv.Env, srv.Gin.Group("/school"))
 

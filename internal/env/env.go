@@ -25,3 +25,13 @@ type Env struct {
 		School services.SchoolService
 	}
 }
+
+func New(db *db.DB) *Env {
+	env := &Env{
+		DB: db,
+	}
+
+	env.Services.School = services.SchoolServiceSql{DB: db}
+
+	return env
+}
