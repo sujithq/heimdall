@@ -54,6 +54,7 @@ func New(dsn string) *Server {
 	srv.Env = env.New(db)
 
 	routes.School(srv.Env, srv.Gin.Group("/school"))
+	routes.Graphql(srv.Env, srv.Gin.Group("/graphql"))
 
 	return srv
 }

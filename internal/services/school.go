@@ -16,20 +16,20 @@ package services
 
 import (
 	"github.com/moducate/heimdall/internal/db"
-	"github.com/moducate/heimdall/internal/models"
+	"github.com/moducate/heimdall/internal/graph/model"
 )
 
 type SchoolService interface {
-	GetAll() (*[]models.School, error)
+	GetAll() ([]*model.School, error)
 }
 
 type SchoolServiceSql struct {
 	DB *db.DB
 }
 
-func (s SchoolServiceSql) GetAll() (*[]models.School, error) {
-	schools := &[]models.School{}
-	err := s.DB.Selectf(schools, "models/school/get_all")
+func (s SchoolServiceSql) GetAll() ([]*model.School, error) {
+	var schools []*model.School
+	err := s.DB.Selectf(&schools, "models/school/get_all")
 
 	return schools, err
 }

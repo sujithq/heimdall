@@ -1,0 +1,10 @@
+type School {
+  id: String!
+  created_at: String!
+  updated_at: String!
+  name: String!
+}
+
+type Query {
+  schools: [School!]!
+}
