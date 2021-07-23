@@ -28,9 +28,9 @@ func MakeRootCmd() *cobra.Command {
 	}
 }
 
-func Execute() {
-	rootCmd := MakeRootCmd()
+var rootCmd = MakeRootCmd()
 
+func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		if _, err = fmt.Fprintln(os.Stderr, err); err != nil {
 			panic(err.Error())
