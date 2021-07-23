@@ -22,6 +22,7 @@ import (
 	"path"
 
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 type DB struct {

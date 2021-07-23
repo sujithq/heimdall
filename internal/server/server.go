@@ -19,6 +19,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	sql "github.com/moducate/heimdall/internal/db"
+	"github.com/moducate/heimdall/internal/env"
+	"github.com/moducate/heimdall/internal/routes"
+	"github.com/moducate/heimdall/internal/services"
 	"log"
 	"net/http"
 	"os"
@@ -29,6 +33,7 @@ import (
 
 type Server struct {
 	Gin *gin.Engine
+	Env *env.Env
 }
 
 func newGin() *gin.Engine {
@@ -37,10 +42,22 @@ func newGin() *gin.Engine {
 	return g
 }
 
-func New() *Server {
+func New(dsn string) *Server {
 	srv := &Server{
 		Gin: newGin(),
 	}
+
+	db, err := sql.New(dsn)
+	if err != nil {
+		log.Fatalf("Heimdall server failed to connect to PostgreSQL: %s\n", err)
+	}
+
+	srv.Env = &env.Env{
+		DB: db,
+	}
+	srv.Env.Services.School = services.SchoolServiceSql{DB: db}
+
+	routes.School(srv.Env, srv.Gin.Group("/school"))
 
 	return srv
 }

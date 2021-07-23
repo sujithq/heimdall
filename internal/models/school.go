@@ -12,39 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package db
+package models
 
-import (
-	"embed"
-	"log"
-
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-	migrate "github.com/rubenv/sql-migrate"
-)
-
-//go:embed migrations/*.sql
-var migrations embed.FS
-
-func Migrate(dsn string) (int, error) {
-	conn, err := sqlx.Connect("postgres", dsn)
-
-	if err != nil {
-		return 0, err
-	}
-
-	defer func() {
-		if conn != nil {
-			if err := conn.Close(); err != nil {
-				log.Fatal(err.Error())
-			}
-		}
-	}()
-
-	migrations := &migrate.EmbedFileSystemMigrationSource{
-		FileSystem: migrations,
-		Root:       "migrations",
-	}
-
-	return migrate.Exec(conn.DB, "postgres", migrations, migrate.Up)
+type School struct {
+	Id        string `json:"id" db:"id"`
+	CreatedAt string `json:"created_at" db:"created_at"`
+	UpdatedAt string `json:"updated_at" db:"updated_at"`
+	Name      string `json:"name" db:"name"`
 }

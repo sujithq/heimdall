@@ -12,39 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package db
+package services
 
 import (
-	"embed"
-	"log"
-
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
-	migrate "github.com/rubenv/sql-migrate"
+	"github.com/moducate/heimdall/internal/db"
+	"github.com/moducate/heimdall/internal/models"
 )
 
-//go:embed migrations/*.sql
-var migrations embed.FS
+type SchoolService interface {
+	GetAll() (*[]models.School, error)
+}
 
-func Migrate(dsn string) (int, error) {
-	conn, err := sqlx.Connect("postgres", dsn)
+type SchoolServiceSql struct {
+	DB *db.DB
+}
 
-	if err != nil {
-		return 0, err
-	}
+func (s SchoolServiceSql) GetAll() (*[]models.School, error) {
+	schools := &[]models.School{}
+	err := s.DB.Selectf(schools, "models/school/get_all")
 
-	defer func() {
-		if conn != nil {
-			if err := conn.Close(); err != nil {
-				log.Fatal(err.Error())
-			}
-		}
-	}()
-
-	migrations := &migrate.EmbedFileSystemMigrationSource{
-		FileSystem: migrations,
-		Root:       "migrations",
-	}
-
-	return migrate.Exec(conn.DB, "postgres", migrations, migrate.Up)
+	return schools, err
 }

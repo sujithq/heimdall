@@ -17,15 +17,14 @@ package cmd
 import (
 	"github.com/moducate/heimdall/internal/db"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func MakeMigrateCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "migrate",
+		Use:   "migrate <DSN>",
 		Short: "Performs Heimdall's PostgreSQL database migrations",
 		Run: func(cmd *cobra.Command, args []string) {
-			n, err := db.Migrate(os.Getenv("DSN"))
+			n, err := db.Migrate(args[0])
 
 			if err != nil {
 				cmd.PrintErrln(err)

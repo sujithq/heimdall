@@ -26,7 +26,7 @@ func MakeServeCmd() *cobra.Command {
 		Use:   "serve",
 		Short: "Serves Heimdall's HTTP API",
 		Run: func(cmd *cobra.Command, args []string) {
-			srv := server.New()
+			srv := server.New(osx.Getenv("DSN", ""))
 			srv.ListenAndServe(fmt.Sprintf(":%s", osx.Getenv("PORT", "1470")))
 		},
 	}
