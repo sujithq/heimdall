@@ -15,4 +15,5 @@ input NewSchool {
 
 type Mutation {
   createSchool(input: NewSchool!): School!
+  updateSchool(id: String!, input: NewSchool!): School!
 }

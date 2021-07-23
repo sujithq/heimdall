@@ -13,6 +13,10 @@ func (r *mutationResolver) CreateSchool(ctx context.Context, input model.NewScho
 	return r.Env.Services.School.Create(input.Name)
 }
 
+func (r *mutationResolver) UpdateSchool(ctx context.Context, id string, input model.NewSchool) (*model.School, error) {
+	return r.Env.Services.School.Update(id, input.Name)
+}
+
 func (r *queryResolver) Schools(ctx context.Context) ([]*model.School, error) {
 	return r.Env.Services.School.GetAll()
 }
