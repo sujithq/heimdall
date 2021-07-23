@@ -8,3 +8,11 @@ type School {
 type Query {
   schools: [School!]!
 }
+
+input NewSchool {
+  name: String!
+}
+
+type Mutation {
+  createSchool(input: NewSchool!): School!
+}

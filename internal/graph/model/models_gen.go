@@ -2,6 +2,10 @@
 
 package model
 
+type NewSchool struct {
+	Name string `json:"name" db:"name"`
+}
+
 type School struct {
 	ID        string `json:"id" db:"id"`
 	CreatedAt string `json:"created_at" db:"created_at"`

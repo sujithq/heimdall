@@ -17,11 +17,13 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/moducate/heimdall/internal/env"
+	"github.com/moducate/heimdall/internal/graph/model"
 	"net/http"
 )
 
 func School(e *env.Env, r *gin.RouterGroup) {
 	r.GET("/", getAllSchools(e))
+	r.POST("/", createSchool(e))
 }
 
 func getAllSchools(e *env.Env) func(g *gin.Context) {
@@ -30,8 +32,29 @@ func getAllSchools(e *env.Env) func(g *gin.Context) {
 
 		if err != nil {
 			_ = g.Error(err)
-		} else {
-			g.JSON(http.StatusOK, schools)
+			return
 		}
+
+		g.JSON(http.StatusOK, schools)
+	}
+}
+
+func createSchool(e *env.Env) func(g *gin.Context) {
+	return func(g *gin.Context) {
+		input := model.NewSchool{}
+
+		if err := g.BindJSON(&input); err != nil {
+			_ = g.Error(err)
+			return
+		}
+
+		school, err := e.Services.School.Create(input.Name)
+
+		if err != nil {
+			_ = g.Error(err)
+			return
+		}
+
+		g.JSON(http.StatusOK, school)
 	}
 }

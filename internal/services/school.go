@@ -21,6 +21,7 @@ import (
 
 type SchoolService interface {
 	GetAll() ([]*model.School, error)
+	Create(name string) (*model.School, error)
 }
 
 type SchoolServiceSql struct {
@@ -32,4 +33,11 @@ func (s SchoolServiceSql) GetAll() ([]*model.School, error) {
 	err := s.DB.Selectf(&schools, "models/school/get_all")
 
 	return schools, err
+}
+
+func (s SchoolServiceSql) Create(name string) (*model.School, error) {
+	school := &model.School{}
+	_, err := s.DB.Getf(school, "models/school/create", name)
+
+	return school, err
 }
