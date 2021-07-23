@@ -17,6 +17,10 @@ func (r *mutationResolver) UpdateSchool(ctx context.Context, id string, input mo
 	return r.Env.Services.School.Update(id, input.Name)
 }
 
+func (r *mutationResolver) DeleteSchool(ctx context.Context, id string) (*model.School, error) {
+	return r.Env.Services.School.Delete(id)
+}
+
 func (r *queryResolver) Schools(ctx context.Context) ([]*model.School, error) {
 	return r.Env.Services.School.GetAll()
 }

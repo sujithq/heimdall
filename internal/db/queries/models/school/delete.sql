@@ -1,0 +1,1 @@
+DELETE FROM "school" WHERE "id" = $1 RETURNING *

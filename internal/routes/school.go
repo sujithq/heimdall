@@ -25,6 +25,7 @@ func School(e *env.Env, r *gin.RouterGroup) {
 	r.GET("/", getAllSchools(e))
 	r.POST("/", createSchool(e))
 	r.PUT("/:id", updateSchool(e))
+	r.DELETE("/:id", deleteSchool(e))
 }
 
 func getAllSchools(e *env.Env) func(g *gin.Context) {
@@ -70,6 +71,26 @@ func updateSchool(e *env.Env) func(g *gin.Context) {
 		}
 
 		school, err := e.Services.School.Update(g.Param("id"), input.Name)
+
+		if err != nil {
+			_ = g.Error(err)
+			return
+		}
+
+		g.JSON(http.StatusOK, school)
+	}
+}
+
+func deleteSchool(e *env.Env) func(g *gin.Context) {
+	return func(g *gin.Context) {
+		input := model.NewSchool{}
+
+		if err := g.BindJSON(&input); err != nil {
+			_ = g.Error(err)
+			return
+		}
+
+		school, err := e.Services.School.Delete(g.Param("id"))
 
 		if err != nil {
 			_ = g.Error(err)

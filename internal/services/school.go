@@ -23,6 +23,7 @@ type SchoolService interface {
 	GetAll() ([]*model.School, error)
 	Create(name string) (*model.School, error)
 	Update(id, name string) (*model.School, error)
+	Delete(id string) (*model.School, error)
 }
 
 type SchoolServiceSql struct {
@@ -46,6 +47,13 @@ func (s SchoolServiceSql) Create(name string) (*model.School, error) {
 func (s SchoolServiceSql) Update(id, name string) (*model.School, error) {
 	school := &model.School{}
 	_, err := s.DB.Getf(school, "models/school/update", name, id)
+
+	return school, err
+}
+
+func (s SchoolServiceSql) Delete(id string) (*model.School, error) {
+	school := &model.School{}
+	_, err := s.DB.Getf(school, "models/school/delete", id)
 
 	return school, err
 }
