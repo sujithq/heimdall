@@ -1,0 +1,28 @@
+# Directories
+.git
+.github
+.husky
+.yarn
+.idea
+bin
+
+# Files
+.commitlintrc.json
+.dockerignore
+.editorconfig
+.gitignore
+.pnp.js
+.versionrc
+.yarnrc.yml
+docker-compose.yml
+Dockerfile
+Makefile
+package.json
+yarn.lock
+
+# Markdown
+**/*.md
+!README.md
+
+# Tests
+**/*_test.go
